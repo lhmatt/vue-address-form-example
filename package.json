@@ -8,8 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "country-list": "^2.1.0",
+    "material-design-icons-iconfont": "^4.0.3",
     "vue": "^2.5.21",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuelidate": "^0.7.4",
+    "vuetify": "^1.3.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
@@ -32,7 +36,25 @@
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
-    "rules": {},
+    "rules": {
+      "import/extensions": "off",
+      "no-console": "off",
+      "no-else-return": "off",
+      "no-underscore-dangle": "off",
+      "space-before-function-paren": "off",
+      "object-curly-spacing": "off",
+      "object-curly-newline": "off",
+      "max-len": "off",
+      "semi": "off",
+      "indent": "off",
+      "comma-dangle": "off",
+      "arrow-parens": 0,
+      "generator-star-spacing": "off",
+      "object-shorthand": "off",
+      "no-prototype-builtins": "off",
+      "no-unused-expressions": "off",
+      "func-names": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
