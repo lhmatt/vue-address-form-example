@@ -574,17 +574,21 @@
       }
     },
     methods: {
+      setInitialValue(initialValue) {
+        this.formData.address1 = initialValue.address1
+        this.formData.address2 = initialValue.address2
+        this.formData.address3 = initialValue.address3
+        this.formData.city = initialValue.city
+        this.formData.county = initialValue.county
+        this.formData.state = initialValue.state
+        this.formData.postCode = initialValue.postCode
+        this.formData.country = initialValue.country
+      },
       setFormData (formData) {
         // Parent could call this to, for example, copy data between address forms (e.g. billing to delivery) so the
         // user doesn't have to type it multiple times.
-        this.formData.address1 = formData.address1
-        this.formData.address2 = formData.address2
-        this.formData.address3 = formData.address3
-        this.formData.city = formData.city
-        this.formData.county = formData.county
-        this.formData.state = formData.state
-        this.formData.postCode = formData.postCode
-        this.formData.country = formData.country
+        // TODO: deepCopy the data to avoid weird bugs?
+        this.setInitialValue(formData)
         this.$v.$touch()
       }
     },

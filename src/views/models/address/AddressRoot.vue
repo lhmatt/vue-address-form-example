@@ -21,12 +21,21 @@
             address2: 'Test 2',
             address3: 'Test 3',
             city: 'City',
-            county: 'Bedfordshire',
-            state: null,
-            country: 'GB',
+            // county: null,
+            state: 'AZ',
+            country: 'US',
             postCode: 'Test Post Code'
           },
-          delivery: null
+          delivery: {
+            address1: 'Test 1',
+            address2: 'Test 2',
+            address3: 'Test 3',
+            city: 'City',
+            // county: null,
+            state: 'AZ',
+            country: 'US',
+            postCode: 'Test Post Code'
+          }
         }
       }
       // If you don't have any existing data then you can set things to null

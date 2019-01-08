@@ -101,7 +101,7 @@ const FieldsMixin = {
   created () {
     // Set the initial formData, if it is specified. Important to note that we don't watch this value - any changes
     // should be done by the form itself, with the modified values pushed back up the chain via events.
-    this.setInitialValue()
+    this.configureInitialValue()
   },
   data: () => ({
     formData: {},
@@ -129,18 +129,24 @@ const FieldsMixin = {
     // }
   },
   methods: {
-    prepareInitialValue () {
+    preInitialValidationHook () {
       return
     },
-    setInitialValue () {
+    setInitialValue (initialValue) {
+      // You should *really* override this
+      // If the initial data is missing any for the formData properties then you will get all
+      // sorts of wierd reactivity bugs
+      this.formData = initialValue
+    },
+    configureInitialValue () {
       // If the form is disabled and we have a default to use then set it
       if (this.disableEdit && this.disabledDefaultData) {
         this.configureDisabledState()
       } else if (this.initialValue) {
         // Otherwise we just the initialValue, if it is set
-        this.formData = this.initialValue
+        this.setInitialValue(this.initialValue)
         // Optional method to prepare the data before we validate it
-        this.prepareInitialValue()
+        this.preInitialValidationHook()
         // Trigger the form validation so that we know if there is any invalid data
         this.$v.$touch()
         // We don't notify the parent of the data change here because they supplied the initial data

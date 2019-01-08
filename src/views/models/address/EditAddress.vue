@@ -1,16 +1,16 @@
 <template>
   <v-content>
-    <v-container fill-height>
+    <v-container align-content-center>
       <v-alert :value="requestFailed" type="error" outline class="mt-4">
         <span>{{requestErrorMessage}}</span>
       </v-alert>
       <v-layout row>
-        <v-flex xs12>
+        <v-flex xs6>
           <h1>Edit Address</h1>
         </v-flex>
       </v-layout>
       <v-layout row>
-        <v-flex xs12>
+        <v-flex xs6>
           <loading v-if="submitting" loadingMessage="Changing address..."></loading>
           <template v-else>
             <full-address-form :initialValue="initialValue.addresses"
