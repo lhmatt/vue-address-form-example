@@ -24,7 +24,7 @@ const FormMixin = {
   },
   data: () => ({
     // We use formData as the name so that we can reuse the logic for all forms
-    formData: null,
+    formData: null
   }),
   created () {
     // Set the initial formData, if it is specified.
@@ -105,7 +105,8 @@ const FieldsMixin = {
   },
   data: () => ({
     formData: {},
-    disabledDefaultData: null
+    disabledDefaultData: null,
+    setupComplete: false
   }),
   validations: {
     formData: {
@@ -130,15 +131,25 @@ const FieldsMixin = {
   },
   methods: {
     preInitialValidationHook () {
-      return
+      // If you use this method you will likely need to call
+      // this.$nextTick(() => {
+      //   this.$v.$reset()
+      // })
+      // to maintain the correct validation $dirty state
     },
     setInitialValue (initialValue) {
       // You should *really* override this
       // If the initial data is missing any for the formData properties then you will get all
       // sorts of wierd reactivity bugs
       this.formData = initialValue
+      // Force a reset of the validation after initialData is set. This prevents erroneous $dirty states being reported
+      // to the parent
+      // this.$nextTick(() => {
+      //   this.$v.$reset()
+      // })
     },
     configureInitialValue () {
+      const self = this
       // If the form is disabled and we have a default to use then set it
       if (this.disableEdit && this.disabledDefaultData) {
         this.configureDisabledState()
@@ -147,23 +158,39 @@ const FieldsMixin = {
         this.setInitialValue(this.initialValue)
         // Optional method to prepare the data before we validate it
         this.preInitialValidationHook()
-        // Trigger the form validation so that we know if there is any invalid data
-        this.$v.$touch()
-        // We don't notify the parent of the data change here because they supplied the initial data
       }
+      self.$nextTick(() => {
+        // // Reset the $dirty state after making any changes with initialValue data
+        // self.$v.$reset()
+        // Trigger validation before the setup completes. This will highlight any errors, but won't notify the parent
+        self.$v.$touch()
+        self.notifyInitialValidity()
+        // Setting this to true enables the formData change notifier
+        self.setupComplete = true
+      })
+      // // Trigger validation before the setup completes. This will highlight any errors, but won't notify the parent
+      // this.$v.$touch()
+      // // Setting this to true enables the formData change notifier
+      // this.setupComplete = true
     },
     configureDisabledState () {
-      // TODO: there is a hub here where setting the disabled data triggers dirty check, regardless of whether the
+      // TODO: there is a bug here where setting the disabled data triggers dirty check, regardless of whether the
       // current form data is already the desired value. In turn this causes the save changes modal to trigger every
-      // time, even without chaning the form data.
+      // time, even without changing the form data.
       this.formData = deepCopy(this.disabledDefaultData)
       // Trigger the form validation so that we know if there is any invalid data
       this.$v.$touch()
       // Feed the change back to the parent
       this.notifyOfUpdate()
     },
-    notifyOfUpdate() {
-      this.$emit('update', this.formData, this.$v.$anyDirty)
+    notifyOfUpdate () {
+      // We only want to notify the parent of changes once the setup is complete (after initialValue has been set)
+      if (this.setupComplete) {
+        this.$emit('update', this.formData, this.$v.$anyDirty)
+        this.$emit('validityChanged', !this.$v.$invalid)
+      }
+    },
+    notifyInitialValidity () {
       this.$emit('validityChanged', !this.$v.$invalid)
     }
   },

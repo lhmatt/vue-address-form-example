@@ -17,12 +17,12 @@
         name: 'Test Company',
         addresses: {
           billing: {
-            address1: 'Test 1',
+            address1: null,
             address2: 'Test 2',
             address3: 'Test 3',
             city: 'City',
             // county: null,
-            state: 'AZ',
+            state: null,
             country: 'US',
             postCode: 'Test Post Code'
           },
