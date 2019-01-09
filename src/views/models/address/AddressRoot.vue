@@ -17,11 +17,11 @@
         name: 'Test Company',
         addresses: {
           billing: {
-            address1: null,
+            address1: 'Test 1',
             address2: 'Test 2',
             address3: 'Test 3',
             city: 'City',
-            // county: null,
+            county: null,
             state: null,
             country: 'US',
             postCode: 'Test Post Code'
@@ -31,12 +31,16 @@
             address2: 'Test 2',
             address3: 'Test 3',
             city: 'City',
-            // county: null,
+            county: null,
             state: 'AZ',
             country: 'US',
             postCode: 'Test Post Code'
           }
         }
+        // addresses: {
+        //   billing: null,
+        //   delivery: null
+        // }
       }
       // If you don't have any existing data then you can set things to null
       // exampleCompanyModel: {

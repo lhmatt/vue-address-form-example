@@ -153,25 +153,22 @@ const FieldsMixin = {
       // If the form is disabled and we have a default to use then set it
       if (this.disableEdit && this.disabledDefaultData) {
         this.configureDisabledState()
+        // TODO: set setupComplete to true?
       } else if (this.initialValue) {
         // Otherwise we just the initialValue, if it is set
         this.setInitialValue(this.initialValue)
         // Optional method to prepare the data before we validate it
         this.preInitialValidationHook()
-      }
-      self.$nextTick(() => {
-        // // Reset the $dirty state after making any changes with initialValue data
-        // self.$v.$reset()
         // Trigger validation before the setup completes. This will highlight any errors, but won't notify the parent
         self.$v.$touch()
+        // Notify the parent of the initial validity after running the initial data through the validator
         self.notifyInitialValidity()
         // Setting this to true enables the formData change notifier
         self.setupComplete = true
-      })
-      // // Trigger validation before the setup completes. This will highlight any errors, but won't notify the parent
-      // this.$v.$touch()
-      // // Setting this to true enables the formData change notifier
-      // this.setupComplete = true
+      } else {
+        // Setting this to true enables the formData change notifier
+        self.setupComplete = true
+      }
     },
     configureDisabledState () {
       // TODO: there is a bug here where setting the disabled data triggers dirty check, regardless of whether the
